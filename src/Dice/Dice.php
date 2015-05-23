@@ -54,6 +54,14 @@ class Dice
 		}		
 		return false;
 	}
+	/**
+	 * Verifica se o resultado da jogada de um dado está dentro do range
+	 * informado
+	 * @param  integer  $min     	Valor mínimo do range
+	 * @param  integer  $max     	Valor máximo do range
+	 * @param  integer 	$chances 	Quantas vezes o dado será jogado
+	 * @return boolean
+	 */
 	public function hasRange($min, $max, $chances = 1)
 	{
 		if ($chances < 1) {
@@ -81,6 +89,13 @@ class Dice
 		}		
 		return false;
 	}
+	/**
+	 * Verifica se o resultado de uma jogada de dado
+	 * é igual ao menos a um dos valores informados
+	 * @param  array   $values  Valores a serem comparados
+	 * @param  integer $chances Quantas vezes o dado será jogado
+	 * @return boolen
+	 */
 	public function inValues(array $values, $chances = 1)
 	{
 		if (!$values) {
@@ -113,15 +128,27 @@ class Dice
 		}		
 		return false;
 	}
-	public function getLastRolls()
+	/**
+	 * Mostra o hitórico dos valores das jogadas de dado
+	 * @return array
+	 */
+	public function getRollsHistoric()
 	{
 		return $this->lastRolls;
 	}
+	/**
+	 * Mostra o valor da última jogada de dado
+	 * @return integer
+	 */
 	public function getLastRoll()
 	{
-		return $this->getLastRolls()[0];
+		return end($this->getRollsHistoric());
 	}
 }
 
 $dice = new Dice;
-echo $dice->hasRange(1, 6, 1);
+echo $dice->roll();
+echo '<br>';
+echo $dice->roll();
+echo '<br>';
+echo $dice->getlastRoll();
