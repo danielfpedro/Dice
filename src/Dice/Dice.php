@@ -54,7 +54,65 @@ class Dice
 		}		
 		return false;
 	}
+	public function hasRange($min, $max, $chances = 1)
+	{
+		if ($chances < 1) {
+			throw new Exception("Your chances have to be at least 1. Given ({$chances})", 1);
+		}
+		if ($min <= 0) {
+			throw new Exception("The min value can't be less than 1. Given (".$min.")", 1);	
+		}
+		if ($min > $this->sides) {
+			throw new Exception("The min value can't be greater than dice sides (".$this->sides."). Given (".$min.")", 1);	
+		}
 
+		if ($max > $this->sides) {
+			throw new Exception("The max value can't be greater than dice sides (".$this->sides."). Given (".$max.")", 1);	
+		}
+		if ($max <= $min) {
+			throw new Exception("The max value can't be less or equals than min value (".$min."). Given (".$max.") ", 1);	
+		}
+
+		for ($i = 0; $i < $chances; $i++) {
+			$value = $this->roll();
+			if ($value >= $min && $value <= $max) {
+				return true;
+			}
+		}		
+		return false;
+	}
+	public function inValues(array $values, $chances = 1)
+	{
+		if (!$values) {
+			throw new Exception("The values can't be empty", 1);
+		}
+		$lessThanMinValues = [];
+		$greaterThanMaxValues = [];
+		foreach ($values as $value) {
+			if ($value < 1) {
+				$lessThanMinValues[] = $value;
+			}
+			if ($value > $this->sides) {
+				$greaterThanMaxValues[] = $value;
+			}
+		}
+		if ($lessThanMinValues) {
+			throw new Exception("On or more values from values can't be less than 1, they are: (".implode(', ', $lessThanMinValues).")", 1);	
+		}
+		if ($greaterThanMaxValues) {
+			throw new Exception("On or more values from values can't be greater than ".$this->sides.", they are: (".implode(', ', $greaterThanMaxValues).")", 1);	
+		}
+		if ($chances < 1) {
+			throw new Exception("Your chances have to be at least 1. Given ({$chances})", 1);
+		}
+		for ($i = 0; $i < $chances; $i++) {
+			$value = $this->roll();
+			if (in_array($value, $values)) {
+				return true;
+			}
+		}		
+		return false;
+	}
 	public function getLastRolls()
 	{
 		return $this->lastRolls;
@@ -64,3 +122,6 @@ class Dice
 		return $this->getLastRolls()[0];
 	}
 }
+
+$dice = new Dice;
+echo $dice->hasRange(1, 6, 1);
