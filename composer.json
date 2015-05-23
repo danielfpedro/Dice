@@ -1,0 +1,19 @@
+{
+    "name": "danielfpedro/dice",
+    "authors": [
+        {
+            "name": "Daniel Pedro",
+            "email": "danielfpedro@gmail.com"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "~4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dice\\": "src\\Dice",
+            "Test\\": "tests"
+        }
+    },
+    "minimum-stability" : "dev"
+}
