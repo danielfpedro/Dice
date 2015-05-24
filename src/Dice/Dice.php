@@ -66,16 +66,9 @@ class Dice
 	{
 		$this->_validateChances($chances);
 
-		if ($min <= 0) {
-			throw new InvalidArgumentException("The min value can't be less than 1. Given (".$min.")", 1);	
-		}
-		if ($min > $this->sides) {
-			throw new InvalidArgumentException("The min value can't be greater than dice sides (".$this->sides."). Given (".$min.")", 1);	
-		}
+		$this->_validateMinExpectedValue($min);
+		$this->_validateMaxExpectedValue($max);
 
-		if ($max > $this->sides) {
-			throw new InvalidArgumentException("The max value can't be greater than dice sides (".$this->sides."). Given (".$max.")", 1);	
-		}
 		if ($max <= $min) {
 			throw new InvalidArgumentException("The max value can't be less or equals than min value (".$min."). Given (".$max.") ", 1);	
 		}
@@ -87,12 +80,6 @@ class Dice
 			}
 		}		
 		return false;
-	}
-	protected function _validateChances($chances)
-	{
-		if ($chances < 1) {
-			throw new InvalidArgumentException("Chances have to be greater than 0. Given({$chances})");
-		}
 	}
 	/**
 	 * Verifica se o resultado de uma jogada de dado
@@ -106,7 +93,10 @@ class Dice
 		if (!$values) {
 			throw new InvalidArgumentException("Values can't be empty");
 		}
-		$this->_validateInValues($values);
+		foreach ($values as $value) {
+			$this->_validateMinExpectedValue($value);
+			$this->_validateMaxExpectedValue($value);
+		}
 		$this->_validateChances($chances);
 
 		for ($i = 0; $i < $chances; $i++) {
@@ -116,25 +106,6 @@ class Dice
 			}
 		}		
 		return false;
-	}
-	protected function _validateInValues($values)
-	{
-		$lessThanMinValues = [];
-		$greaterThanMaxValues = [];
-		foreach ($values as $value) {
-			if ($value < 1) {
-				$lessThanMinValues[] = $value;
-			}
-			if ($value > $this->sides) {
-				$greaterThanMaxValues[] = $value;
-			}
-		}
-		if ($lessThanMinValues) {
-			throw new InvalidArgumentException("One or more values from values can't be less than 1, they are: (".implode(', ', $lessThanMinValues).")");	
-		}
-		if ($greaterThanMaxValues) {
-			throw new InvalidArgumentException("On or more values from values can't be greater than ".$this->sides.", they are: (".implode(', ', $greaterThanMaxValues).")");
-		}
 	}
 	/**
 	 * Mostra o hitórico dos valores das jogadas de dado
@@ -152,7 +123,26 @@ class Dice
 	{
 		return end($this->getRollsHistory());
 	}
-}
 
-$d6 = new Dice(2);
-$d6->hasRange(1, 2);
+	//////////////////
+	// ARGUMENTS VALIDATIONS //
+	//////////////////
+	public function _validateMinExpectedValue($value)
+	{
+		if ($value < 1 && $value > $this->sides) {
+			throw new InvalidArgumentException(sprintf("The value can't be greater than dice sides '%i'. Given (%i) ", $this->sides, $value));
+		}
+	}
+	public function _validateMaxExpectedValue($value)
+	{
+		if ($value > $this->sides) {
+			throw new InvalidArgumentException("Tey");
+		}
+	}
+	protected function _validateChances($chances)
+	{
+		if ($chances < 1) {
+			throw new InvalidArgumentException("Chances have to be greater than 0. Given({$chances})");
+		}
+	}
+}
