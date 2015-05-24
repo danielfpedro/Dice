@@ -2,7 +2,7 @@
 
 namespace Dice;
 
-use Exception;
+use InvalidArgumentException;
 
 /**
  * 
@@ -14,7 +14,7 @@ class Dice
 	 * @var number
 	 */
 	protected $sides;
-	protected $lastRolls = [];
+	protected $rollsHistory = [];
 
 	/**
 	 * Método construtor
@@ -23,7 +23,7 @@ class Dice
 	public function __construct($sides = 6)
 	{	
 		if ($sides < 2) {
-			throw new Exception("Expection Dice sides value greater than 2, given ({$sides})");
+			throw new InvalidArgumentException("Sides have to be greater than 2. Given ({$sides})");
 		}
 		$this->sides = $sides;
 	}
@@ -34,7 +34,7 @@ class Dice
 	public function roll()
 	{
 		$result = rand(1, $this->sides);
-		$this->lastRolls[] = $result;
+		$this->rollsHistory[] = $result;
 		return $result;
 	}
 	/**
@@ -45,7 +45,7 @@ class Dice
 	public function isExpected($expected, $chances = 1)
 	{
 		if ($expected > $this->sides) {
-			throw new Exception("Can't expect a value greater than Dice sides. Dice sides is ({$this->sides}) and your are expecting ({$expected})", 1);			
+			throw new InvalidArgumentException("Can't expect a value greater than Dice sides. Dice sides is ({$this->sides}) and your are expecting ({$expected})");			
 		}
 		for ($i = 0; $i < $chances; $i++) {
 			if ($this->roll() == $expected) {
@@ -64,21 +64,20 @@ class Dice
 	 */
 	public function hasRange($min, $max, $chances = 1)
 	{
-		if ($chances < 1) {
-			throw new Exception("Your chances have to be at least 1. Given ({$chances})", 1);
-		}
+		$this->_validateChances($chances);
+
 		if ($min <= 0) {
-			throw new Exception("The min value can't be less than 1. Given (".$min.")", 1);	
+			throw new InvalidArgumentException("The min value can't be less than 1. Given (".$min.")", 1);	
 		}
 		if ($min > $this->sides) {
-			throw new Exception("The min value can't be greater than dice sides (".$this->sides."). Given (".$min.")", 1);	
+			throw new InvalidArgumentException("The min value can't be greater than dice sides (".$this->sides."). Given (".$min.")", 1);	
 		}
 
 		if ($max > $this->sides) {
-			throw new Exception("The max value can't be greater than dice sides (".$this->sides."). Given (".$max.")", 1);	
+			throw new InvalidArgumentException("The max value can't be greater than dice sides (".$this->sides."). Given (".$max.")", 1);	
 		}
 		if ($max <= $min) {
-			throw new Exception("The max value can't be less or equals than min value (".$min."). Given (".$max.") ", 1);	
+			throw new InvalidArgumentException("The max value can't be less or equals than min value (".$min."). Given (".$max.") ", 1);	
 		}
 
 		for ($i = 0; $i < $chances; $i++) {
@@ -88,6 +87,12 @@ class Dice
 			}
 		}		
 		return false;
+	}
+	protected function _validateChances($chances)
+	{
+		if ($chances < 1) {
+			throw new InvalidArgumentException("Chances have to be greater than 0. Given({$chances})");
+		}
 	}
 	/**
 	 * Verifica se o resultado de uma jogada de dado
@@ -99,8 +104,21 @@ class Dice
 	public function inValues(array $values, $chances = 1)
 	{
 		if (!$values) {
-			throw new Exception("The values can't be empty", 1);
+			throw new InvalidArgumentException("Values can't be empty");
 		}
+		$this->_validateInValues($values);
+		$this->_validateChances($chances);
+
+		for ($i = 0; $i < $chances; $i++) {
+			$value = $this->roll();
+			if (in_array($value, $values)) {
+				return true;
+			}
+		}		
+		return false;
+	}
+	protected function _validateInValues($values)
+	{
 		$lessThanMinValues = [];
 		$greaterThanMaxValues = [];
 		foreach ($values as $value) {
@@ -112,29 +130,19 @@ class Dice
 			}
 		}
 		if ($lessThanMinValues) {
-			throw new Exception("On or more values from values can't be less than 1, they are: (".implode(', ', $lessThanMinValues).")", 1);	
+			throw new InvalidArgumentException("One or more values from values can't be less than 1, they are: (".implode(', ', $lessThanMinValues).")");	
 		}
 		if ($greaterThanMaxValues) {
-			throw new Exception("On or more values from values can't be greater than ".$this->sides.", they are: (".implode(', ', $greaterThanMaxValues).")", 1);	
+			throw new InvalidArgumentException("On or more values from values can't be greater than ".$this->sides.", they are: (".implode(', ', $greaterThanMaxValues).")");
 		}
-		if ($chances < 1) {
-			throw new Exception("Your chances have to be at least 1. Given ({$chances})", 1);
-		}
-		for ($i = 0; $i < $chances; $i++) {
-			$value = $this->roll();
-			if (in_array($value, $values)) {
-				return true;
-			}
-		}		
-		return false;
 	}
 	/**
 	 * Mostra o hitórico dos valores das jogadas de dado
 	 * @return array
 	 */
-	public function getRollsHistoric()
+	public function getRollsHistory()
 	{
-		return $this->lastRolls;
+		return $this->rollsHistory;
 	}
 	/**
 	 * Mostra o valor da última jogada de dado
@@ -142,13 +150,9 @@ class Dice
 	 */
 	public function getLastRoll()
 	{
-		return end($this->getRollsHistoric());
+		return end($this->getRollsHistory());
 	}
 }
 
-$dice = new Dice;
-echo $dice->roll();
-echo '<br>';
-echo $dice->roll();
-echo '<br>';
-echo $dice->getlastRoll();
+$d6 = new Dice(2);
+$d6->hasRange(1, 2);
