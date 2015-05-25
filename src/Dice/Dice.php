@@ -44,6 +44,10 @@ class Dice
 	 */
 	public function isExpected($expected, $chances = 1)
 	{
+		if (is_array($expected)) {
+			return $this->_inValues($expected, $chances);
+		}
+		
 		ArgumentValidation::expected($expected, $this->sides);
 		ArgumentValidation::chances($chances);
 
@@ -51,7 +55,7 @@ class Dice
 			if ($this->roll() == $expected) {
 				return true;
 			}
-		}		
+		}
 		return false;
 	}
 	/**
@@ -85,7 +89,7 @@ class Dice
 	 * @param  integer $chances Quantas vezes o dado será jogado
 	 * @return boolen
 	 */
-	public function inValues(array $values, $chances = 1)
+	protected function _inValues(array $values, $chances = 1)
 	{
 		ArgumentValidation::hasValues($values);
 

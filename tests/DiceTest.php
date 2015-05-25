@@ -40,6 +40,20 @@ class DiceTest extends PHPUnit_Framework_TestCase
 			$this->assertFalse($expected);
 		}
 	}
+	public function testIsExpectedWithArray()
+	{
+		$valuesExpected = [1, 2];
+		$d20 = new Dice(20);
+		$expected = $d20->isExpected($valuesExpected, 2);
+
+		$lastRoll = $d20->getLastRoll();
+
+		if (in_array($lastRoll, $valuesExpected)) {
+			$this->assertTrue($expected);
+		} else {
+			$this->assertFalse($expected);
+		}
+	}
 	public function testGetRollsHistory()
 	{
 		$value = $this->d6->roll();
@@ -79,13 +93,5 @@ class DiceTest extends PHPUnit_Framework_TestCase
 		} else {
 			$this->assertFalse($result);
 		}
-	}
-
-	public function testInValues()
-	{
-		$d4 = new Dice(4);
-		$chances = 20;
-		$result = $d4->inValues([1, 2, 3, 4], $chances);
-		$this->assertTrue($result);
 	}
 }
