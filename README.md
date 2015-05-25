@@ -17,17 +17,21 @@ Rolling the dice and getting the history
 	$d4->getRollsHistory(); //Output: [2, 1]
 	
 ### ::isExpected
-	// Roll the dice 1 time and return true if the result is 2
+	// Roll the dice once and return true if the result is 2
 	$d4->isExptected(2);
-	// Roll the dice 5 times and return true if one of this times the result is 2
+You can pass a second argument to assign how many times the dice will roll to try match the value
 	$d4->isExpected(2, 5);
 
 ### ::inValues
+	// Roll the dice once and return true if the result is 1 or 3
 	$d4->inValues([1, 3]);
+You can pass a second argument to assign how many times the dice will roll to try match the values
 	$d4->inValues([1, 3], 5);
 	
 ### ::inRange
+	// Roll the dice once and return true if result is under the range 1@3
 	$d4->inRange([1, 3]);
+You can pass a second argument to assign how many times the dice will roll to try match the range
 	$d4->inRange([1, 3], 5);
 	
 
