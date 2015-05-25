@@ -1,14 +1,14 @@
 # Dice
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.txt)
 
-Lib to simulate operations with a dice
+Lib to simulate operations with a dice.
 
 ### Installation
 `composer require danielfpedro\dice`
 
 ### Lets roll the dice
 	
-Rolling the dice and getting the history
+Rolling the dice and getting the history.
 	
 	use Dice\Dice;
 	
@@ -37,11 +37,10 @@ Will roll the dice once and test if the result match with the expected value.
 	$d4->isExpected([1, 2], 5)// Output: false
 	
 ### ::inRange
+Will roll the dice once and test if the result match with the expected range.
 
-	// Roll the dice once and return true if result is under the range 1@3
 	$d4->inRange([1, 3]);
-You can pass a second argument to assign how many times the dice will roll to try match the range
-
+	//You can pass a second argument to assign how many times the dice will roll to try match the range
 	$d4->inRange([1, 3], 5);
 	
 
