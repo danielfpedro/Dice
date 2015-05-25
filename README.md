@@ -6,23 +6,26 @@ Lib to simulate operations with a dice
 
 ### Lets roll the dice
 	
-Roll a dice and getting the history
+Rolling the dice and getting the history
 
 	$d4 = new Dice(4); // If you don't assign any value the default will be 6
 	$d4->roll(); //Output: 2
 	$d4->roll(); //Output: 1
-	$d4->getLastRoll();//Output: 1
-	$d4->getHistory();//Output: [2, 1]
+	$d4->getLastRoll(); //Output: 1
+	$d4->getHistory(); //Output: [2, 1]
 	
 ### ::isExpected
-Will roll a dice many times as you assign and return a boolean value if one of this times the dice hit what you are expecting.
-	
-	// Will roll a dice once and return true if the result of tihs roll be 2
-	// Otherwise will return false
-	$d4->isExptected(2)
-	
-	// Same thing but will roll the dice 5 times
-	$d4->isExpected(2, 5)
+	// Roll the dice 1 time and return true if the result is 2
+	$d4->isExptected(2);
+	// Roll the dice 5 times and return true if one of this times the result is 2
+	$d4->isExpected(2, 5);
+
+### ::inValues
+	$d4->inValues([1, 3]);
+	$d4->inValues([1, 3], 5);
+### ::hasRange
+	$d4->hasRange([1, 3]);
+	$d4->hasRange([1, 3], 5);
 	
 
 
