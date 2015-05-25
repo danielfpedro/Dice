@@ -6,7 +6,7 @@ Lib to simulate operations with a dice.
 ### Installation
 `composer require danielfpedro\dice`
 
-### Lets roll the dice
+### Let's roll the dice
 	
 Rolling the dice and getting the history.
 	
