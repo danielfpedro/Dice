@@ -33,7 +33,7 @@ Will roll the dice once and test if the result match with the expected value.
 	$d4->isExpected([1, 2]) // Output: false
 	
 	//You still can pass a second argument to assign how many times the dice will be rolled
-	// Dice roll results: 4, 3, 4, 4
+	// Dice roll results: 4, 3, 4, 4, 3
 	$d4->isExpected([1, 2], 5)// Output: false
 	
 ### ::inRange
