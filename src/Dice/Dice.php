@@ -2,7 +2,9 @@
 
 namespace Dice;
 
-use InvalidArgumentException;
+//require '../../vendor/autoload.php';
+
+use Dice\ArgumentValidation;
 
 /**
  * 
@@ -22,9 +24,7 @@ class Dice
 	 */
 	public function __construct($sides = 6)
 	{	
-		if ($sides < 2) {
-			throw new InvalidArgumentException("Sides have to be greater than 2. Given ({$sides})");
-		}
+		ArgumentValidation::sides($sides);
 		$this->sides = $sides;
 	}
 	/**
@@ -44,9 +44,9 @@ class Dice
 	 */
 	public function isExpected($expected, $chances = 1)
 	{
-		if ($expected > $this->sides) {
-			throw new InvalidArgumentException("Can't expect a value greater than Dice sides. Dice sides is ({$this->sides}) and your are expecting ({$expected})");			
-		}
+		ArgumentValidation::expected($expected, $this->sides);
+		ArgumentValidation::chances($chances);
+
 		for ($i = 0; $i < $chances; $i++) {
 			if ($this->roll() == $expected) {
 				return true;
@@ -62,16 +62,13 @@ class Dice
 	 * @param  integer 	$chances 	Quantas vezes o dado será jogado
 	 * @return boolean
 	 */
-	public function hasRange($min, $max, $chances = 1)
+	public function inRange($min, $max, $chances = 1)
 	{
-		$this->_validateChances($chances);
+		ArgumentValidation::expected($min, $this->sides);
+		ArgumentValidation::expected($max, $this->sides);
+		ArgumentValidation::range($min, $max, $this->sides);
 
-		$this->_validateMinExpectedValue($min);
-		$this->_validateMaxExpectedValue($max);
-
-		if ($max <= $min) {
-			throw new InvalidArgumentException("The max value can't be less or equals than min value (".$min."). Given (".$max.") ", 1);	
-		}
+		ArgumentValidation::chances($chances);
 
 		for ($i = 0; $i < $chances; $i++) {
 			$value = $this->roll();
@@ -90,14 +87,12 @@ class Dice
 	 */
 	public function inValues(array $values, $chances = 1)
 	{
-		if (!$values) {
-			throw new InvalidArgumentException("Values can't be empty");
-		}
+		ArgumentValidation::hasValues($values);
+
 		foreach ($values as $value) {
-			$this->_validateMinExpectedValue($value);
-			$this->_validateMaxExpectedValue($value);
+			ArgumentValidation::expected($value, $this->sides);
 		}
-		$this->_validateChances($chances);
+		ArgumentValidation::chances($chances);
 
 		for ($i = 0; $i < $chances; $i++) {
 			$value = $this->roll();
@@ -123,26 +118,6 @@ class Dice
 	{
 		return end($this->getRollsHistory());
 	}
-
-	//////////////////
-	// ARGUMENTS VALIDATIONS //
-	//////////////////
-	public function _validateMinExpectedValue($value)
-	{
-		if ($value < 1 && $value > $this->sides) {
-			throw new InvalidArgumentException(sprintf("The value can't be greater than dice sides '%i'. Given (%i) ", $this->sides, $value));
-		}
-	}
-	public function _validateMaxExpectedValue($value)
-	{
-		if ($value > $this->sides) {
-			throw new InvalidArgumentException("Tey");
-		}
-	}
-	protected function _validateChances($chances)
-	{
-		if ($chances < 1) {
-			throw new InvalidArgumentException("Chances have to be greater than 0. Given({$chances})");
-		}
-	}
 }
+
+// $dice = new Dice(0);

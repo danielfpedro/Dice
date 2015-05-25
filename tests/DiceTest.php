@@ -12,6 +12,11 @@ class DiceTest extends PHPUnit_Framework_TestCase
 	{
 		$this->d6 = new Dice;
 	}
+	public function testGeneral()
+	{
+		$d4 = new Dice(4);
+		$d4->roll();
+	}
 	public function testRoll()
 	{
 		$sides = 4;
@@ -61,13 +66,13 @@ class DiceTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($value, $this->d6->getLastRoll());
 	}
 
-	public function testHasRange()
+	public function testinRange()
 	{
 		$d6 = new Dice;
-		$result = $d6->hasRange(1, 6);
+		$result = $d6->inRange(1, 6);
 		$this->assertTrue($result);
 
-		$result = $d6->hasRange(1, 2);
+		$result = $d6->inRange(1, 2);
 
 		if ($d6->getLastRoll() <= 2) {
 			$this->assertTrue($result);
