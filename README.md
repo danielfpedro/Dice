@@ -26,9 +26,9 @@ Rolling the dice and getting the history
 	$d4->inValues([1, 3]);
 	$d4->inValues([1, 3], 5);
 	
-### ::hasRange
-	$d4->hasRange([1, 3]);
-	$d4->hasRange([1, 3], 5);
+### ::inRange
+	$d4->inRange([1, 3]);
+	$d4->inRange([1, 3], 5);
 	
 
 
