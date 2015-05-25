@@ -3,7 +3,7 @@
 
 Lib to simulate operations with a dice
 
-### Instalation
+### Installation
 `composer require danielfpedro\dice`
 
 ### Lets roll the dice
