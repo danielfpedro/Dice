@@ -22,8 +22,10 @@ Rolling the dice and getting the history
 	// Roll the dice once and return true if the result is 2
 	$d4->isExptected(2);
 You can pass a second argument to assign how many times the dice will roll to try match the value
+
 	$d4->isExpected(2, 5);
 The first argument could be an array of values
+
 	$d4->isExpected([1, 2])
 	
 ### ::inRange
