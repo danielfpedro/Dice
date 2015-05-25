@@ -59,6 +59,46 @@ class DiceExepction extends PHPUnit_Framework_TestCase
 		$dice = new Dice(4);
 		$dice->isExpected(-1);
 	}
+	/**
+	 * @expectedException	InvalidArgumentException
+	 */
+	public function testExceptionIsExpectedEmptyArray()
+	{
+		$dice = new Dice(4);
+		$dice->isExpected([]);
+	}
+	/**
+	 * @expectedException	InvalidArgumentException
+	 */
+	public function testExceptionIsExpectedArrayInvalidValueZero()
+	{
+		$dice = new Dice(4);
+		$dice->isExpected([0, 1, 3]);
+	}
+	/**
+	 * @expectedException	InvalidArgumentException
+	 */
+	public function testExceptionIsExpectedArrayInvalidValueNegative()
+	{
+		$dice = new Dice(4);
+		$dice->isExpected([-1, 1, 3]);
+	}
+	/**
+	 * @expectedException	InvalidArgumentException
+	 */
+	public function testExceptionIsExpectedArrayInvalidValueGreater()
+	{
+		$dice = new Dice(4);
+		$dice->isExpected([5, 1, 3]);
+	}
+	/**
+	 * @expectedException	InvalidArgumentException
+	 */
+	public function testExceptionIsExpectedArrayInvalidValues()
+	{
+		$dice = new Dice(4);
+		$dice->isExpected([-1, 0, 1, 2, 5, 6]);
+	}
 	///////////////////////
 	// Testing inRange //
 	///////////////////////
