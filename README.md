@@ -20,14 +20,20 @@ Rolling the dice and getting the history
 	
 ### ::isExpected
 Will roll the dice once and test if the result match with the expected value.
-
-	$d4->isExpected(2);
+	// Supose the dice roll result is 2
+	$d4->isExpected(2); // Output: true
+	
 	//You can pass a second argument if you want the dice be rolled more than once
-	$d4->isExpected(2, 5);
+	// Supose the result of the 5 rolls is: 1, 1, 4, 2, 1
+	$d4->isExpected(2, 5); // Output: true
+	
 	//The first argument could be an array of values expected
-	$d4->isExpected([1, 2])
+	// Supose the dice roll result is 3
+	$d4->isExpected([1, 2]) // Output: false
+	
 	//You still can pass a second argument to assign how many times the dice will be rolled
-	$d4->isExpected([1, 2], 5)
+	// Dice roll results: 4, 3, 4, 4
+	$d4->isExpected([1, 2], 5)// Output: false
 	
 ### ::inRange
 
