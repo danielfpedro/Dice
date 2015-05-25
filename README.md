@@ -20,6 +20,7 @@ Rolling the dice and getting the history
 	
 ### ::isExpected
 Will roll the dice once and test if the result match with the expected value.
+
 	// Supose the dice roll result is 2
 	$d4->isExpected(2); // Output: true
 	
