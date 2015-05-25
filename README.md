@@ -21,7 +21,7 @@ Rolling the dice and getting the history
 ### ::isExpected
 Roll the dice once and return true if the result match with the expected value.
 
-	$d4->isExptected(2);
+	$d4->isExpected(2);
 You can pass a second argument if you want the dice be rolled more than one time.
 
 	$d4->isExpected(2, 5);
